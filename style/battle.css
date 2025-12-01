@@ -1,0 +1,117 @@
+#battle_UI {
+	position: absolute;
+	width: 100%;
+	max-height: 100dvh;
+	aspect-ratio: 16/9;
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: 10px 1fr 10px;
+	grid-template-columns: 10px 1fr 10px;
+}
+
+#battleContent {
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	grid-column-start: 2;
+	grid-row-start: 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+#battle_UI * {
+	min-width: 0;
+	min-height: 0;
+	box-sizing: border-box;
+}
+
+/* 게임 상태 띄우기 용 */
+#status-bar {
+	display: contents;
+	align-items: center;
+	gap: 10px;
+}
+
+#stats-pos {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: stretch;
+	text-align: center;
+	padding-block: 10%;
+	font-size: calc(min(3cqw, 27px));
+	gap: 10px;
+}
+
+.player-stats {
+	border-radius: 1rem;
+	background: #2F4F4F;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding-block: 1lh;
+	font-size: 2cqw;
+	flex-grow: 1;
+	box-sizing: border-box;
+	white-space: pre;
+}
+
+/* 적일러스트 */
+#enemy-img {
+	display: block;
+	border-radius: 1rem;
+	background: #2F4F4F;
+	align-self: center;
+	min-width: 10%;
+	aspect-ratio: 1/1;
+	flex-grow: 1;
+}
+#enemy-img > img#enemy-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    background: transparent;
+}
+
+/* 적 스탯 */
+#battle_UI .enemy-info {
+	align-items: flex-start;
+	text-align: center;
+	vertical-align: top;
+	display: grid;
+	min-height: fit-content;
+}
+
+#monsterUI {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	overflow: hidden;
+	gap: 0.5rem;
+}
+
+#monsterUI>* {
+	padding-inline: 1rem;
+	margin-inline: 0.5rem;
+}
+
+#battleMain {
+	display: grid;
+	grid-template-columns: 1fr 2fr 1.5fr;
+	gap: 10px;
+	justify-items: stretch;
+	align-items: stretch;
+}
+
+#battleMain>* {
+	padding: 10px;
+}
+
+#battleHeader {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	padding: 10px;
+	gap: 0.8em;
+}

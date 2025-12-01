@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>CRASH THE RNG</title>
+	<style>
+		html,
+		body {
+			max-width: 100dvw;
+			max-height: 100dvh;
+			overflow: hidden;
+			margin: 0;
+			font-family: "Noto Sans KR", system-ui, sans-serif;
+			font-size: calc(min(3.2cqw, 27px));
+		}
+
+		body {
+			background: #4682B4;
+			color: #F0F8FF;
+		}
+
+		/*모든 버튼 스타일 */
+		.action-btn {
+			display: block;
+			border-radius: 20px;
+			aspect-ratio: 3/1;
+			min-height: 2lh;
+
+			background: #2F4F4F;
+			border: none;
+			color: #F0F8FF;
+
+			white-space: nowrap;
+			text-align: center;
+
+			cursor: pointer;
+			transition: all 0.2s ease;
+			user-select: none;
+		}
+
+		/* 버튼올렸을때 */
+		.action-btn:hover {
+			background: #3D5A5A;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px #1a1a1a;
+		}
+
+		/* 버튼눌렀을때 */
+		.action-btn:active {
+			transform: translateY(1px);
+			box-shadow: 0 2px 6px #1a1a1a;
+		}
+
+		/* 시작 화면 */
+		.start_UI {
+			position: fixed;
+			inset: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: rgba(0, 0, 0, 0.4);
+		}
+
+		.start-content {
+			width: 720px;
+			max-width: 90%;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			align-items: center;
+		}
+
+		/*게임 시작 ui */
+		.start-img {
+			width: 100%;
+			height: 500px;
+			border-radius: 18px;
+			background-image: url('start.png');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		/*게임 시작 부분에 쓸것*/
+		.start-text {
+			color: var#F0F8FF;
+			min-height: 50px;
+		}
+
+
+		#enemy-name {
+			/* 나중에 적 여러개 만들때 편하게 바꿀라고 만들어둠*/
+			font-weight: bold;
+		}
+
+		button:not(.action-btn)::first-line {
+			font-size: 80%;
+		}
+		.story_UI {
+            position: fixed;
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; 
+        }
+        .story-window {
+            background: #808080; 
+            width: 800px;
+            max-width: 90%;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .story-text {
+            color: #fff;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            white-space: pre-line; 
+            word-break: keep-all; 
+        }
+        #story-confirm-btn {
+            width: 150px;
+            align-self: center;
+            font-size: 1.1rem;
+        }
+	</style>
+
+	<link href="style/main.css" rel="stylesheet" />
+	<link href="style/battle.css" rel="stylesheet" />
+	<link href="style/roll.css" rel="stylesheet" />
+	<link href="style/help.css" rel="stylesheet" />
+	<link href="style/inventory.css" rel="stylesheet" />
+	<link href="style/shop.css" rel="stylesheet" />
+</head>
+
+<body>
+	<!-- 게임 시작 UI -->
+	<div id="start_UI" class="start_UI" stlye="display: block;">
+		<div class="start-content">
+			<div class="start-img"></div>
+			<div class="start-text">Crash The RNG</div>
+			<button id="start-game-button" class="action-btn">게임 시작</button>
+		</div>
+	</div>
+
+	<!-- 상점 UI -->
+	<div class="shop_UI" id="shop_UI" style="display:none"> <!-- 동적으로 바꿔야 하는 부분들은 다 id 넣어놨음 -->
+		<div class="shop-window">
+			<h1 class="shop-title">상점</h1>
+			<div>
+				<div id="shop-gold">보유골드: 0G</div> <!-- 동적으로 바꿔야 하는 부분들은 다 id 넣어놨음 -->
+			</div>
+			<div id="shop-item-list" class="shop-item-list"></div>
+			<button id="exit-shop" class="action-btn">상점 나가기</button>
+		</div>
+	</div>
+
+	<!-- 전투 UI -->
+	<div id="battle_UI">
+		<section id="battleContent">
+			<!-- 상단 바: 게임 상태, 기타 버튼 (cf. lh==line height) -->
+			<header id="battleHeader">
+				<div id="status-bar"> <!-- 동적으로 바꿔야 하는 부분들은 다 id 넣어놨음 -->
+					<div>층: <strong id="current-floor">1</strong>/<span id="total-floors">10</span></div>
+					<div>체력: <strong id="player-hp">5</strong>/<span id="player-max-hp">10</span></div>
+					<div>골드: <strong id="player-gold">15</strong>G</div>
+				</div>
+				<div id="controls" style="flex-grow: 1; display: inline-flex; justify-content: right; gap: 0.3em">
+					<button id="help-button" onclick="showHelp()">help</button>
+				</div>
+			</header>
+
+			<main id="battleMain">
+
+				<!--주사위-->
+				<section id="diceUI">
+					<div class="rollDisplay">
+						Roll: 0/2
+					</div>
+
+					<section class="grid">
+						<section class="cell" , id="c1">
+						</section>
+						<section class="cell" , id="c2">
+						</section>
+						<section class="cell" , id="c3">
+						</section>
+						<section class="cell" , id="c4">
+						</section>
+					</section>
+
+					<section id="diceControls">
+						<div class="scoreDisplay" , style="text-align: right; flex-grow: 1">
+							0
+						</div> <!-- 점수 합표기 -->
+					</section>
+				</section>
+
+				<!--전투 관련 정보-->
+				<section id="monsterUI">
+					<!-- 적 이미지 -->
+					<div class="enemy-img" style="flex-grow: 1;">
+						<img id="enemy-image" src="" alt="몬스터 이미지"
+							style="width: 100%; height: 100%; object-fit: contain; display: block;">
+					</div>
+
+					<!-- 적 -->
+					<div class="enemy-info">
+						<div id="enemy-name">몬스터</div> <!-- 동적으로 바꿔야 하는 부분들은 다 id 넣어놨음 -->
+						<div>몬스터 체력: <span id="enemy-hp">0</span></div><!-- 동적으로 바꿔야 하는 부분들은 다 id 넣어놨음 -->
+					</div>
+
+					<!-- DICE 버튼 -->
+					<button class="action-btn" id="attack-button" style="padding: 10px">
+						DICE!
+					</button>
+
+					<!-- 인벤토리 버튼 -->
+					<button class="action-btn" id="inventory">
+						인벤토리
+					</button>
+				</section>
+
+				<!-- PC 스탯 -->
+				<div id="stats-pos" style="order: -1;">
+					특수형
+					<div id="score-info" class="player-stats"></div>
+					사용 아이템
+					<div id="item-info" class="player-stats"></div>
+				</div>
+			</main>
+		</section>
+	</div>
+
+	<!-- 도움말 UI -->
+	<div class="overlay" id="help_UI" style="display:none">
+		<div class="help-window">
+			<div class="help-title"><strong>게임 규칙</strong></div>
+			<div class="help-content">
+				<div class="help-text">
+					<p><strong>주사위 시스템:</strong></p>
+					<ul>
+						<li>교차형: A + D = B + C 라면 +1배</li>
+						<li>원천형: 모든 눈금이 3 이하일시에 +1배</li>
+						<li>정석형: 눈금 4개가 일치 할때 +1배</li>
+						<li>우상형: 3개의 눈금이 같고 그눈금의 합이 나머지 눈금과 같을 때 +2배</li>
+						<li>라인 보너스: 같은 숫자가 같은 라인에 있다면 그 주사위 눈금은 2배</li>
+					</ul>
+				</div>
+				<div style="position: relative; min-width: 100px;">
+					<img src="tile.png">
+				</div>
+			</div>
+			<button id="exit-help" class="action-btn">닫기</button>
+		</div>
+	</div>
+
+	<!-- 인벤토리 창 -->
+	<div class="overlay" id="inventory_UI" style="display:none">
+		<div class="inventory-window">
+			<div id="inventory-title"><strong>인벤토리</strong></div>
+
+			<div id="inventory-list" class="inventory-grid">
+				<div class="empty-message">비어있음</div>
+			</div>
+
+			<button id="exit-inventory" class="action-btn">닫기</button>
+		</div>
+	</div>
+    <!-- 스토리 창 -->
+	<div id="story_UI" class="story_UI" style="display: none;">
+        <div class="story-window">
+            <div id="story-text" class="story-text"></div>
+            <button id="story-confirm-btn" class="action-btn">확인</button>
+        </div>
+    </div>
+
+	<!-- 오버레이 -->
+	<div class="overlay" id="overlay" style="display: none; background: rgba(0, 0, 0, 0.3);"></div>
+
+	<!-- 스크립트 -->
+	<script src="js/gameState.js"></script>
+	<script src="js/floor.js"></script>
+	<script src="js/battle.js"></script>
+	<script src="js/shop.js"></script>
+	<script src="js/main.js"></script>
+	<script src="roll/roll.js"></script>
+	<script src="js/help.js"></script>
+	<script src="js/inventory.js"></script>
+	<script src="roll/effects.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			// 전투 테스트용 시작화면 스킵
+			//document.getElementById("start_UI").style.display = "none";
+			document.getElementById("battle_UI").style.display = "none";
+
+			// 테스트용 아이템 지급
+			inventorySystem.addItem("체력 물약", 10);
+			inventorySystem.addItem("더블 주사위", 10);
+			inventorySystem.addItem("위대한 주사위", 10);
+			inventorySystem.addItem("생명의 주사위", 10);
+			inventorySystem.addItem("레벨 업 주사위", 10);
+		});
+	</script>
+</body>
+
+</html>

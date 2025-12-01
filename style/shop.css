@@ -1,0 +1,71 @@
+.shop_UI {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 2;
+		}
+
+		.shop-window {
+			background: #4682B4;
+			border-radius: 25px;
+			padding: 30px;
+			width: 900px;
+			max-height: 80vh;
+			overflow-y: auto;
+			position: relative;
+		}
+
+		.shop-item-list {
+			margin-top: 24px;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+            margin-bottom: 24px;
+		}
+
+		.shop-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px 14px;
+			border-radius: 14px;
+			background: rgba(0, 0, 0, 0.15);
+		}
+
+		.shop-item-info {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+		}
+
+		.shop-item-name {
+			font-weight: bold;
+		}
+
+		.shop-item-desc {
+			font-size: 80%;
+			opacity: 0.9;
+		}
+
+		.shop-item-price {
+			margin-right: 12px;
+			white-space: nowrap;
+		}
+
+		.shop-title {
+			text-align: center;
+			font-size: 150%;
+			margin-bottom: 40px;
+		}
+
+		#exit-shop {
+			width: 260px;
+			margin: 0 auto;
+			display: block;
+		}
