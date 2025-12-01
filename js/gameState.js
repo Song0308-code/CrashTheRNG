@@ -2,35 +2,35 @@
 const monsterData = {
     1: { // 1층: 레드 슬라임
         name: "레드 슬라임",
-        image: "Red_Slime.png", // 이미지 경로
+        image: "Image//Red_Slime.png", // 이미지 경로
         maxHp: 30,
         Max_dice: 6,
         Min_dice: 1
     },
     2: { // 2층: 마법 골렘
         name: "마법 골렘",
-        image: "Magic_Golem.png",
+        image: "Image//Magic_Golem.png",
         maxHp: 40,
         Max_dice: 6,
         Min_dice: 1
     },
     3: { // 3층: 헤비골렘
         name: "헤비 골렘",
-        image: "Heavy_Golem.png",
+        image: "Image//Heavy_Golem.png",
         maxHp: 50,
         Max_dice: 6,
         Min_dice: 1
     },
     4: { // 4층: 믹스 플라스크   
         name: "믹스 플라스크",
-        image: "Mix.png",
+        image: "Image//Mix.png",
         maxHp: 60,
         Max_dice: 6,
         Min_dice: 1
     },
     5: { // 5층: 이사벨라
         name: "이사벨라",
-        image: "Isabella.png",
+        image: "Image//Isabella.png",
         maxHp: 70,
         Max_dice: 6,
         Min_dice: 1
