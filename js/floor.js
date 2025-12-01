@@ -9,7 +9,7 @@ const floorSystem = {
              
             this.currentFloor++;
             this.loadFloorMonster(this.currentFloor); //이걸로 몬스터 업데이트하는걸로 바꿈
-            gameState.player.gold += 20;
+            gameState.player.gold += 50;
             updateUI();
             this.showNextActionChoice();
         } else {

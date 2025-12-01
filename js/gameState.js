@@ -3,35 +3,35 @@ const monsterData = {
     1: { // 1층: 레드 슬라임
         name: "레드 슬라임",
         image: "Image//Red_Slime.png", // 이미지 경로
-        maxHp: 30,
+        maxHp: 120,
         Max_dice: 6,
         Min_dice: 1
     },
     2: { // 2층: 마법 골렘
         name: "마법 골렘",
         image: "Image//Magic_Golem.png",
-        maxHp: 40,
+        maxHp: 180,
         Max_dice: 6,
         Min_dice: 1
     },
     3: { // 3층: 헤비골렘
         name: "헤비 골렘",
         image: "Image//Heavy_Golem.png",
-        maxHp: 50,
+        maxHp: 250,
         Max_dice: 6,
         Min_dice: 1
     },
     4: { // 4층: 믹스 플라스크   
         name: "믹스 플라스크",
         image: "Image//Mix.png",
-        maxHp: 60,
+        maxHp: 350,
         Max_dice: 6,
         Min_dice: 1
     },
     5: { // 5층: 이사벨라
         name: "이사벨라",
         image: "Image//Isabella.png",
-        maxHp: 70,
+        maxHp: 420,
         Max_dice: 6,
         Min_dice: 1
     }
@@ -41,7 +41,7 @@ const gameState = {
     player: { // 플레이어 스탯
         hp: 10,
         maxHp: 10,
-        gold: 150, //아이템 잘 사지나 컴파일용으로 돈많이 설정해둠
+        gold: 0, //아이템 잘 사지나 컴파일용으로 돈많이 설정해둠
         Max_dice: 6,
         Min_dice: 1,
 
